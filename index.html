@@ -49,7 +49,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .inner{transform:rotateY(180deg);border-radius:14px 0 0 14px;background:var(--paper);box-shadow:inset -14px 0 14px -14px #0007}
 .front b{font:400 26px var(--head);color:#cfcdca}
 .front small{font-size:13px;color:var(--dim);margin-top:6px}
-.front i{position:absolute;bottom:22px;width:18px;height:18px;border-radius:50%;border:2px solid var(--dim);border-right-color:transparent}
+.front i{position:absolute;bottom:26px;width:28px;height:2px;border-radius:2px;background:var(--dim);opacity:.5}
 #home>:not(.stage){transition:opacity .45s}
 #home.morph>:not(.stage){opacity:0}
 .tap{font-size:.875rem;color:var(--dim);text-align:center;margin:0 24px 6px}
@@ -83,7 +83,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .face::after{content:"";position:absolute;inset:0;background:linear-gradient(#0000,#0004);opacity:0;transition:opacity .75s}
 .leaf.go .face::after{opacity:1}
 /* full-screen note */
-.sheet{position:absolute;inset:0;background:var(--paper);color:var(--paper-ink);padding:max(18px,env(safe-area-inset-top,0px)) 20px max(20px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;visibility:hidden;z-index:5}
+.sheet{color-scheme:light;position:absolute;inset:0;background:var(--paper);color:var(--paper-ink);padding:max(18px,env(safe-area-inset-top,0px)) 20px max(20px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;visibility:hidden;z-index:5}
 .sheet.show{visibility:visible}
 .sheet .bar{display:flex;justify-content:space-between;align-items:center;font-size:.9375rem;margin-bottom:6px;color:var(--paper-dim)}
 .sheet .bar button{padding:12px 10px;min-height:44px;margin:-6px -10px;font-weight:600;color:var(--paper-ink)}
@@ -126,7 +126,10 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .list .empty{color:var(--dim);font-size:15px;padding:10px 8px}
 .new.pri{background:var(--surface);color:var(--ink);border-radius:12px;box-shadow:inset 0 0 0 1px var(--edge)}
 #dl{color:#c9928a}
+.sacts{display:flex;gap:6px;margin:0 -10px}
 .sdel{align-self:flex-start;min-height:44px;padding:12px 10px;margin:0 -10px;font-size:.9375rem;font-weight:600;color:#6b1f1f}
+.sacts .sdel{margin:0}
+#cp{color:var(--paper-dim)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -162,7 +165,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Edit note">
     <div class="bar"><button id="cancel">Cancel</button><span id="sd"></span><button id="save">Save</button></div>
     <textarea id="ta" placeholder="Write something…"></textarea>
-    <button id="del" class="sdel" hidden>Delete note</button>
+    <div class="sacts"><button id="cp" class="sdel">Copy</button><button id="del" class="sdel" hidden>Delete note</button></div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"><span id="tt"></span><button id="tu">Undo</button></div>
 </div>
@@ -177,13 +180,13 @@ try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist().ca
 let nb=null,notes=[],idx=0,editing=null,base='',busy=false,live=[],level=0,saving=false,seen=store.get('swipe-seen')==='1';
 function setNb(n){nb=n;notes=n.notes;$('ct').textContent=n.title;$('csub').textContent=notes.length+(notes.length===1?' note':' notes')}
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-const fmt=(s,o)=>new Date(s+'T12:00').toLocaleDateString('en-GB',o);
+const fmt=(s,o)=>new Date(s+'T12:00').toLocaleDateString(undefined,o);
 const LONG={weekday:'long',day:'numeric',month:'long',year:'numeric'};
 const reduce=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
 const tick=()=>{try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}};
 const esc=x=>x.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const act=(el,fn)=>el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn()}});
-$('today').textContent=$('today3').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+$('today').textContent=$('today3').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
 
 /* ---- history: system back / Android back gesture ---- */
 try{history.replaceState({lv:0},'')}catch(e){}
@@ -278,6 +281,8 @@ function closeSheet(cb){const sh=$('sheet'),done=()=>{sh.classList.remove('show'
 $('cancel').onclick=()=>back();
 $('save').onclick=()=>{saving=true;back()};
 $('del').onclick=()=>{$('ta').value='';saving=true;back()};
+$('cp').onclick=async()=>{const t=$('ta').value;if(!t.trim())return;
+  try{await navigator.clipboard.writeText(t);toast('Copied')}catch(e){toast('Couldn’t copy')}};
 function finishSave(){const t=$('ta').value.trim();store.del(DK);
   if(!editing&&!t)return;if(editing&&t===editing.text)return;
   const book=nb;
@@ -332,7 +337,7 @@ function renderShelf(dropId,stagger){const st=$('stack');st.innerHTML='';
   [...notebooks].reverse().forEach((n,i)=>{const k=hash(n.id),d=document.createElement('div');
     d.className='spine';d.dataset.id=n.id;d.setAttribute('role','button');d.tabIndex=0;
     d.style.cssText=`height:${46+k%18}px;background:${COLORS[k%6]};--o:${((k>>3)%13)-6}px`;
-    if(n.id===dropId||stagger){d.classList.add('drop');if(stagger)d.style.animationDelay=(i*70)+'ms'}
+    if(n.id===dropId||stagger){d.classList.add('drop');if(stagger)d.style.animationDelay=(Math.min(i,5)*70)+'ms'}
     const sp=document.createElement('span');sp.textContent=n.title;d.appendChild(sp);st.appendChild(d)});
   $('tapShelf').hidden=!notebooks.length||store.get('pulled')==='1'}
 const spineEl=id=>document.querySelector(`.spine[data-id="${id}"]`);
