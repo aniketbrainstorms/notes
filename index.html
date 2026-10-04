@@ -166,7 +166,7 @@ function flipTo(dir,fn){
   if(leaf)endFlip(pageHTML());
   const old=pageHTML();fn();const nw=pageHTML();
   if(reduce()){setStatic(nw);return}
-  const up=dir>=0;
+  const up=dir<0;
   $('tIn').innerHTML=up?nw:old;$('bIn').innerHTML=up?old:nw;
   leaf=document.createElement('div');leaf.className='leaf '+(up?'up':'down');
   leaf.innerHTML=`<div class="face"><div class="in" style="top:${up?0:'-100%'}">${old}</div></div><div class="face back"><div class="in" style="top:${up?'-100%':0}">${nw}</div></div>`;
