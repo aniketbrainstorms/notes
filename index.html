@@ -114,7 +114,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .box p{font:400 1.1875rem/1.3 var(--head);margin-bottom:14px}
 .box input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:var(--bg);color:var(--ink);font:16px var(--body);margin-bottom:14px}
 .mb{display:flex;justify-content:flex-end;gap:4px}.mb button{padding:12px 16px;min-height:44px;font-size:.9375rem;color:var(--dim)}.mb #mok{color:var(--ink);font-weight:600}
-.toast{position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:8;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border-radius:14px;padding:6px 6px 6px 16px;font-size:.9375rem;box-shadow:inset 0 0 0 1px var(--edge),0 10px 24px #000a;opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden;transition:opacity .25s,transform .25s,visibility 0s .25s}
+.toast{touch-action:pan-y;position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:8;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border-radius:14px;padding:6px 6px 6px 16px;font-size:.9375rem;box-shadow:inset 0 0 0 1px var(--edge),0 10px 24px #000a;opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden;transition:opacity .25s,transform .25s,visibility 0s .25s}
 .toast.show{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .25s,transform .25s}
 .toast button{padding:12px 14px;min-height:44px;font-weight:600}
 .new[aria-disabled=true]{opacity:.3}
@@ -382,8 +382,21 @@ $('mi').onkeydown=e=>{if(e.key==='Enter')$('mok').click()};
 addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('idxm').classList.contains('show'))closeIdx();else if($('modal').classList.contains('show'))$('mc').click();else if($('sheet').classList.contains('show'))back()});
 let tms=0;
 function armToast(){clearTimeout(tT);tT=setTimeout(()=>{$('toast').classList.remove('show');undoFn=null},tms)}
-function toast(msg,undo){$('tt').textContent=msg;undoFn=undo||null;$('tu').hidden=!undo;$('toast').classList.add('show');tms=undo?8000:4000;armToast()}
+function toast(msg,undo){$('tt').textContent=msg;undoFn=undo||null;$('tu').hidden=!undo;$('toast').classList.add('show');tms=undo?5000:3000;armToast()}
 for(const [ev,fn] of [['pointerenter',()=>clearTimeout(tT)],['focusin',()=>clearTimeout(tT)],['pointerleave',()=>$('toast').classList.contains('show')&&armToast()],['focusout',()=>$('toast').classList.contains('show')&&armToast()]])$('toast').addEventListener(ev,fn);
+const toastEl=$('toast');let tx=null,tdx=0,tmoved=false;
+function dismissToast(dir){clearTimeout(tT);toastEl.style.transition='transform .2s,opacity .2s';toastEl.style.transform=`translateX(${dir*120}%)`;toastEl.style.opacity='0';
+  setTimeout(()=>{toastEl.classList.remove('show');undoFn=null;clearTimeout(tT);toastEl.style.cssText=''},200)}
+toastEl.addEventListener('pointerdown',e=>{tx=e.clientX;tdx=0;tmoved=false});
+toastEl.addEventListener('pointermove',e=>{if(tx===null)return;tdx=e.clientX-tx;
+  if(!tmoved&&Math.abs(tdx)>8){tmoved=true;toastEl.setPointerCapture(e.pointerId);toastEl.style.transition='none'}
+  if(tmoved){toastEl.style.transform=`translateX(${tdx}px)`;toastEl.style.opacity=String(1-Math.min(1,Math.abs(tdx)/220))}});
+function endDrag(){if(tx===null)return;tx=null;
+  if(tmoved){if(Math.abs(tdx)>70)dismissToast(tdx<0?-1:1);
+    else{toastEl.style.transition='transform .2s,opacity .2s';toastEl.style.transform='';toastEl.style.opacity='';setTimeout(()=>{toastEl.style.transition=''},200)}
+    setTimeout(()=>{tmoved=false},50)}}
+toastEl.addEventListener('pointerup',endDrag);toastEl.addEventListener('pointercancel',endDrag);
+toastEl.addEventListener('click',e=>{if(tmoved){e.stopPropagation();e.preventDefault()}},true);
 $('tu').onclick=()=>{const f=undoFn;undoFn=null;$('toast').classList.remove('show');f&&f()};
 $('newnb').onclick=()=>ask({text:'Name your notebook',input:1,ok:'Create'},v=>{const n={id:Date.now(),title:v||'Untitled',notes:[]};notebooks.push(n);persist();renderShelf(n.id)});
 $('rn').onclick=()=>ask({text:'Rename notebook',input:1,value:nb.title,ok:'Save'},v=>{if(v){nb.title=v;persist();setNb(nb);renderShelf()}});
