@@ -27,7 +27,7 @@
 [hidden]{display:none!important}
 html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overscroll-behavior:none;-webkit-text-size-adjust:100%;-webkit-touch-callout:none}
 @media (min-width:460px){html,body{background:#0f0f10}}
-#app{position:relative;height:100%;height:100dvh;max-width:430px;margin:0 auto;background:var(--bg);overflow:hidden;-webkit-user-select:none;user-select:none}
+#app{position:relative;width:100%;height:100%;height:100dvh;background:var(--bg);overflow:hidden;-webkit-user-select:none;user-select:none}
 textarea,input{-webkit-user-select:text;user-select:text}
 .date{font-size:.875rem;color:var(--dim);margin-top:14px}
 h1{font:400 1.875rem/1.15 var(--head);text-align:center;margin:18px 24px 0}
@@ -35,11 +35,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;transi
 button:active{transform:scale(.96);opacity:.7}
 button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .sheet :focus-visible{outline-color:var(--paper-ink)}
-.view{position:absolute;inset:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);display:flex;flex-direction:column;align-items:center;transition:opacity .5s,visibility 0s}
+.view{position:absolute;inset:0;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);display:flex;flex-direction:column;align-items:center;transition:opacity .5s,visibility 0s}
 .view.off{opacity:0;pointer-events:none;visibility:hidden;transition:opacity .5s,visibility 0s .5s}
 /* home: flat rounded notebook */
 .stage{flex:1;display:grid;place-items:center;perspective:900px;width:100%;min-height:280px}
 @media (max-height:560px){#home{overflow-y:auto}}
+@media (max-height:520px){#browse h1{display:none}.paper{margin-top:52px}}
 .book{width:190px;height:260px;position:relative;transform-style:preserve-3d;cursor:pointer;outline-offset:10px;transition:transform .12s}
 .book:active{transform:scale(.98)}
 .pages{position:absolute;inset:0;transform:translateZ(-5px);opacity:0;border-radius:0 14px 14px 0;background:var(--paper);box-shadow:inset 14px 0 14px -14px #0007}
@@ -54,11 +55,11 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 #home.morph>:not(.stage){opacity:0}
 .tap{font-size:.875rem;color:var(--dim);text-align:center;margin:0 24px 6px}
 .tools{display:flex;gap:6px;margin-bottom:14px}.tools button{padding:13px 20px;min-height:44px;font-size:.9375rem;color:var(--dim)}
-.navb{position:absolute;left:4px;top:calc(env(safe-area-inset-top,0px) + 2px);padding:13px 14px;min-height:44px;font-size:.9375rem;color:var(--dim);z-index:1}
+.navb{position:absolute;left:calc(env(safe-area-inset-left,0px) + 4px);top:calc(env(safe-area-inset-top,0px) + 2px);padding:13px 14px;min-height:44px;font-size:.9375rem;color:var(--dim);z-index:1}
 /* browse */
 #browse>:not(.paper){transition:opacity .4s}
 #browse.dim>:not(.paper){opacity:.1}
-.paper{width:calc(100% - 28px);flex:1;margin:22px 0 8px;position:relative;perspective:1400px;cursor:pointer;min-height:0;color:var(--paper-ink);touch-action:pan-x}
+.paper{width:min(calc(100% - 28px),760px);flex:1;margin:22px 0 8px;position:relative;perspective:1400px;cursor:pointer;min-height:0;color:var(--paper-ink);touch-action:pan-x}
 .paper::before,.paper::after{content:"";position:absolute;inset:0;border-radius:14px;z-index:-1}
 .paper::before{background:#7b787a;transform:translateY(-7px) scale(.95)}
 .paper::after{background:#5c5a5c;transform:translateY(-13px) scale(.9)}
@@ -68,7 +69,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .in{position:absolute;left:0;right:0;height:200%;padding:18px;text-align:left}
 .half.t .in{top:0}.half.b .in{top:-100%}
 .in .d{font:400 .875rem var(--body);color:var(--paper-dim);margin-bottom:8px}
-.in .t{font-size:1rem;line-height:1.5;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:9;-webkit-box-orient:vertical;overflow:hidden}
+.in .t{font-size:1rem;line-height:1.5;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:var(--lines,9);-webkit-box-orient:vertical;overflow:hidden}
 .in .f{position:absolute;left:18px;right:18px;bottom:12px;display:flex;justify-content:space-between;font-size:.8125rem;color:var(--paper-dim)}
 .in .pn{padding:14px 0 14px 28px;margin:-14px 0}
 .new{margin:6px 0 14px;padding:13px 20px;min-height:44px;font-size:.9375rem;color:var(--dim)}
@@ -83,7 +84,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .face::after{content:"";position:absolute;inset:0;background:linear-gradient(#0000,#0004);opacity:0;transition:opacity .75s}
 .leaf.go .face::after{opacity:1}
 /* full-screen note */
-.sheet{color-scheme:light;position:absolute;inset:0;background:var(--paper);color:var(--paper-ink);padding:max(18px,env(safe-area-inset-top,0px)) 20px max(20px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;visibility:hidden;z-index:5}
+.sheet{color-scheme:light;position:absolute;inset:0;background:var(--paper);color:var(--paper-ink);padding:max(18px,env(safe-area-inset-top,0px)) max(20px,calc((100% - 720px)/2)) max(20px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;visibility:hidden;z-index:5}
 .sheet.show{visibility:visible}
 .sheet .bar{display:flex;justify-content:space-between;align-items:center;font-size:.9375rem;margin-bottom:6px;color:var(--paper-dim)}
 .sheet .bar button{padding:12px 10px;min-height:44px;margin:-6px -10px;font-weight:600;color:var(--paper-ink)}
@@ -114,7 +115,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .box p{font:400 1.1875rem/1.3 var(--head);margin-bottom:14px}
 .box input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:var(--bg);color:var(--ink);font:16px var(--body);margin-bottom:14px}
 .mb{display:flex;justify-content:flex-end;gap:4px}.mb button{padding:12px 16px;min-height:44px;font-size:.9375rem;color:var(--dim)}.mb #mok{color:var(--ink);font-weight:600}
-.toast{touch-action:pan-y;position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:8;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border-radius:14px;padding:6px 6px 6px 16px;font-size:.9375rem;box-shadow:inset 0 0 0 1px var(--edge),0 10px 24px #000a;opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden;transition:opacity .25s,transform .25s,visibility 0s .25s}
+.toast{touch-action:pan-y;position:absolute;left:0;right:0;margin:0 auto;width:min(calc(100% - 28px),480px);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:8;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border-radius:14px;padding:6px 6px 6px 16px;font-size:.9375rem;box-shadow:inset 0 0 0 1px var(--edge),0 10px 24px #000a;opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden;transition:opacity .25s,transform .25s,visibility 0s .25s}
 .toast.show{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .25s,transform .25s}
 .toast button{padding:12px 14px;min-height:44px;font-weight:600}
 .new[aria-disabled=true]{opacity:.3}
@@ -230,6 +231,9 @@ function pageHTML(){const n=notes[idx];navState();
   return `<div class="d">${fmt(n?n.date:iso(new Date()),LONG)}</div><div class="t">${n?esc(n.text):'Nothing here yet. Tap to write your first note.'}</div><div class="f"><span>${hint}</span><span class="pn">${notes.length?(idx+1)+'/'+notes.length:''}</span></div>`}
 function setStatic(h){$('tIn').innerHTML=$('bIn').innerHTML=h}
 function render(){setStatic(pageHTML())}
+function fitLines(){const p=$('paper'),lh=parseFloat(getComputedStyle(document.documentElement).fontSize)*1.5;
+  document.documentElement.style.setProperty('--lines',Math.max(2,Math.min(18,Math.floor((p.clientHeight-100)/lh))))}
+new ResizeObserver(fitLines).observe($('paper'));
 let leaf=null,doneT=null;
 function endFlip(h){if(doneT){clearTimeout(doneT);doneT=null}if(leaf){leaf.remove();leaf=null}setStatic(h)}
 function flipTo(dir,fn){
