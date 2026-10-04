@@ -29,11 +29,12 @@ html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--bo
 @media (min-width:460px){html,body{background:#0f0f10}}
 #app{position:relative;height:100%;height:100dvh;max-width:430px;margin:0 auto;background:var(--bg);overflow:hidden;-webkit-user-select:none;user-select:none}
 textarea,input{-webkit-user-select:text;user-select:text}
-.date{font-size:14px;color:var(--dim);margin-top:14px}
-h1{font:400 30px/1.15 var(--head);text-align:center;margin:18px 24px 0}
+.date{font-size:.875rem;color:var(--dim);margin-top:14px}
+h1{font:400 1.875rem/1.15 var(--head);text-align:center;margin:18px 24px 0}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;transition:transform .12s,opacity .12s}
 button:active{transform:scale(.96);opacity:.7}
 button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.sheet :focus-visible{outline-color:var(--paper-ink)}
 .view{position:absolute;inset:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);display:flex;flex-direction:column;align-items:center;transition:opacity .5s,visibility 0s}
 .view.off{opacity:0;pointer-events:none;visibility:hidden;transition:opacity .5s,visibility 0s .5s}
 /* home: flat rounded notebook */
@@ -51,9 +52,9 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .front i{position:absolute;bottom:22px;width:18px;height:18px;border-radius:50%;border:2px solid var(--dim);border-right-color:transparent}
 #home>:not(.stage){transition:opacity .45s}
 #home.morph>:not(.stage){opacity:0}
-.tap{font-size:14px;color:var(--dim);text-align:center;margin:0 24px 6px}
-.tools{display:flex;gap:6px;margin-bottom:14px}.tools button{padding:13px 20px;min-height:44px;font-size:15px;color:var(--dim)}
-.navb{position:absolute;left:4px;top:calc(env(safe-area-inset-top,0px) + 2px);padding:13px 14px;min-height:44px;font-size:15px;color:var(--dim);z-index:1}
+.tap{font-size:.875rem;color:var(--dim);text-align:center;margin:0 24px 6px}
+.tools{display:flex;gap:6px;margin-bottom:14px}.tools button{padding:13px 20px;min-height:44px;font-size:.9375rem;color:var(--dim)}
+.navb{position:absolute;left:4px;top:calc(env(safe-area-inset-top,0px) + 2px);padding:13px 14px;min-height:44px;font-size:.9375rem;color:var(--dim);z-index:1}
 /* browse */
 #browse>:not(.paper){transition:opacity .4s}
 #browse.dim>:not(.paper){opacity:.1}
@@ -66,11 +67,11 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .half.b{bottom:0;border-radius:0 0 14px 14px;box-shadow:inset 0 14px 14px -14px #0007}
 .in{position:absolute;left:0;right:0;height:200%;padding:18px;text-align:left}
 .half.t .in{top:0}.half.b .in{top:-100%}
-.in .d{font:400 14px var(--body);color:var(--paper-dim);margin-bottom:8px}
-.in .t{font-size:16px;line-height:1.5;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:9;-webkit-box-orient:vertical;overflow:hidden}
-.in .f{position:absolute;left:18px;right:18px;bottom:12px;display:flex;justify-content:space-between;font-size:13px;color:var(--paper-dim)}
+.in .d{font:400 .875rem var(--body);color:var(--paper-dim);margin-bottom:8px}
+.in .t{font-size:1rem;line-height:1.5;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:9;-webkit-box-orient:vertical;overflow:hidden}
+.in .f{position:absolute;left:18px;right:18px;bottom:12px;display:flex;justify-content:space-between;font-size:.8125rem;color:var(--paper-dim)}
 .in .pn{padding:14px 0 14px 28px;margin:-14px 0}
-.new{margin:6px 0 14px;padding:13px 20px;min-height:44px;font-size:15px;color:var(--dim)}
+.new{margin:6px 0 14px;padding:13px 20px;min-height:44px;font-size:.9375rem;color:var(--dim)}
 .row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 4px;margin:0 8px}
 .leaf{position:absolute;left:0;right:0;height:50%;transform-style:preserve-3d;z-index:3;transition:transform .75s cubic-bezier(.45,.05,.3,1)}
 .leaf.up{top:0;transform-origin:50% 100%}.leaf.down{bottom:0;transform-origin:50% 0}
@@ -84,9 +85,9 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 /* full-screen note */
 .sheet{position:absolute;inset:0;background:var(--paper);color:var(--paper-ink);padding:max(18px,env(safe-area-inset-top,0px)) 20px max(20px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;visibility:hidden;z-index:5}
 .sheet.show{visibility:visible}
-.sheet .bar{display:flex;justify-content:space-between;align-items:center;font-size:15px;margin-bottom:6px;color:var(--paper-dim)}
+.sheet .bar{display:flex;justify-content:space-between;align-items:center;font-size:.9375rem;margin-bottom:6px;color:var(--paper-dim)}
 .sheet .bar button{padding:12px 10px;min-height:44px;margin:-6px -10px;font-weight:600;color:var(--paper-ink)}
-.sheet textarea{flex:1;background:none;border:0;resize:none;font:17px/1.6 var(--body);color:var(--paper-ink);outline:none}
+.sheet textarea{flex:1;background:none;border:0;resize:none;font:1.0625rem/1.6 var(--body);color:var(--paper-ink);outline:none}
 .sheet textarea::placeholder{color:var(--paper-dim)}
 /* shelf */
 .pile{flex:1;width:100%;overflow-y:auto;display:flex;margin-top:6px}
@@ -110,10 +111,10 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .modal{position:absolute;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:9}
 .modal.show{display:flex}
 .box{background:var(--panel);border-radius:16px;padding:20px;width:calc(100% - 56px);max-width:320px}
-.box p{font:400 19px/1.3 var(--head);margin-bottom:14px}
+.box p{font:400 1.1875rem/1.3 var(--head);margin-bottom:14px}
 .box input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:var(--bg);color:var(--ink);font:16px var(--body);margin-bottom:14px}
-.mb{display:flex;justify-content:flex-end;gap:4px}.mb button{padding:12px 16px;min-height:44px;font-size:15px;color:var(--dim)}.mb #mok{color:var(--ink);font-weight:600}
-.toast{position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:8;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border-radius:14px;padding:6px 6px 6px 16px;font-size:15px;box-shadow:inset 0 0 0 1px var(--edge),0 10px 24px #000a;opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden;transition:opacity .25s,transform .25s,visibility 0s .25s}
+.mb{display:flex;justify-content:flex-end;gap:4px}.mb button{padding:12px 16px;min-height:44px;font-size:.9375rem;color:var(--dim)}.mb #mok{color:var(--ink);font-weight:600}
+.toast{position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:8;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border-radius:14px;padding:6px 6px 6px 16px;font-size:.9375rem;box-shadow:inset 0 0 0 1px var(--edge),0 10px 24px #000a;opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden;transition:opacity .25s,transform .25s,visibility 0s .25s}
 .toast.show{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .25s,transform .25s}
 .toast button{padding:12px 14px;min-height:44px;font-weight:600}
 .new[aria-disabled=true]{opacity:.3}
@@ -122,7 +123,10 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .list button[aria-current=true]{background:#ffffff14}
 .list small{display:block;font-size:13px;color:var(--dim)}
 .list span{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.list .empty{color:var(--dim);font-size:15px;padding:10px 8px} 
+.list .empty{color:var(--dim);font-size:15px;padding:10px 8px}
+.new.pri{background:var(--surface);color:var(--ink);border-radius:12px;box-shadow:inset 0 0 0 1px var(--edge)}
+#dl{color:#c9928a}
+.sdel{align-self:flex-start;min-height:44px;padding:12px 10px;margin:0 -10px;font-size:.9375rem;font-weight:600;color:#6b1f1f}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -133,7 +137,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
     <h1>Your notebooks</h1>
     <div class="pile"><div class="stack" id="stack"></div></div>
     <p class="tap" id="tapShelf" hidden>Tap a notebook to pull it out</p>
-    <div class="row"><button class="new" id="newnb">New notebook</button><button class="new" id="exp">Back up</button><button class="new" id="imp">Restore</button></div>
+    <div class="row"><button class="new pri" id="newnb">New notebook</button><button class="new" id="exp">Back up</button><button class="new" id="imp">Restore</button></div>
     <input type="file" id="file" accept=".json,application/json" hidden>
   </section>
 
@@ -148,16 +152,17 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 
   <section class="view off" id="browse">
     <button class="navb" id="toHome">‹ Back</button>
-    <h1 id="back" role="button" tabindex="0">Browse your notes</h1>
+    <h1 id="back">Browse your notes</h1>
     <div class="paper" id="paper" role="button" tabindex="0"><div class="half t"><div class="in" id="tIn"></div></div><div class="half b" aria-hidden="true"><div class="in" id="bIn"></div></div></div>
-    <div class="row"><button class="new" id="prev" aria-label="Previous note">‹</button><button class="new" id="new">New note</button><button class="new" id="all">All notes</button><button class="new" id="next" aria-label="Next note">›</button></div>
+    <div class="row"><button class="new" id="prev" aria-label="Previous note">‹</button><button class="new pri" id="new">New note</button><button class="new" id="all">All notes</button><button class="new" id="next" aria-label="Next note">›</button></div>
   </section>
 
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="box"><p id="mt"></p><input id="mi" maxlength="28" placeholder="Notebook title" aria-label="Notebook title"><div class="mb"><button id="mc">Cancel</button><button id="mok">OK</button></div></div></div>
   <div class="modal" id="idxm" role="dialog" aria-modal="true" aria-label="All notes"><div class="box"><input id="q" placeholder="Search notes" aria-label="Search notes"><div class="list" id="list"></div><div class="mb"><button id="idxc">Close</button></div></div></div>
-    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Edit note">
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Edit note">
     <div class="bar"><button id="cancel">Cancel</button><span id="sd"></span><button id="save">Save</button></div>
     <textarea id="ta" placeholder="Write something…"></textarea>
+    <button id="del" class="sdel" hidden>Delete note</button>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"><span id="tt"></span><button id="tu">Undo</button></div>
 </div>
@@ -185,7 +190,8 @@ try{history.replaceState({lv:0},'')}catch(e){}
 function pushLv(n){level=n;try{history.pushState({lv:n},'')}catch(e){}}
 function back(){if(level>0)history.back()}
 addEventListener('popstate',e=>{const to=(e.state&&e.state.lv)||0;
-  if(to>=level)return;
+  if(to>level){history.go(level-to);return}
+  if(to===level)return;
   const from=level;
   if(from!==3&&busy){pushLv(from);return}
   level=to;
@@ -257,19 +263,21 @@ if(vv){vv.addEventListener('resize',fitSheet);vv.addEventListener('scroll',fitSh
 const dirty=()=>$('ta').value!==base;
 let dt=null;
 $('ta').oninput=()=>{clearTimeout(dt);dt=setTimeout(()=>{if(dirty())store.set(DK,JSON.stringify({nb:nb.id,note:editing?editing.id:null,text:$('ta').value}));else store.del(DK)},400)};
-function openSheet(n){editing=n;base=n?n.text:'';let v=base,restored=false;
+let opener=null;
+function openSheet(n){opener=document.activeElement;editing=n;base=n?n.text:'';let v=base,restored=false;
   try{const d=JSON.parse(store.get(DK)||'null');if(d&&d.nb===nb.id&&d.note===(n?n.id:null)&&typeof d.text==='string'&&d.text!==base){v=d.text;restored=true}}catch(e){}
-  $('ta').value=v;$('sd').textContent=restored?'Draft restored':fmt(n?n.date:iso(new Date()),{day:'numeric',month:'short',year:'numeric'});
+  $('ta').value=v;$('del').hidden=!n;$('sd').textContent=restored?'Draft restored':fmt(n?n.date:iso(new Date()),{day:'numeric',month:'short',year:'numeric'});
   const from=sheetInset();$('sheet').classList.add('show');$('browse').classList.add('dim');syncInert();fitSheet();pushLv(3);
   if(!reduce())$('sheet').animate({clipPath:[from,FULL]},{duration:480,easing:SEASE});
   setTimeout(()=>$('ta').focus(),480)}
-function closeSheet(cb){const sh=$('sheet'),done=()=>{sh.classList.remove('show');sh.style.cssText='';$('browse').classList.remove('dim');syncInert();cb&&cb()};
+function closeSheet(cb){const sh=$('sheet'),done=()=>{sh.classList.remove('show');sh.style.cssText='';$('browse').classList.remove('dim');syncInert();if(opener&&opener.isConnected)opener.focus({preventScroll:true});opener=null;cb&&cb()};
   $('ta').blur();
   if(reduce()){done();return}
   const a=sh.animate({clipPath:[FULL,sheetInset()]},{duration:400,easing:SEASE,fill:'forwards'});
   a.onfinish=()=>{done();a.cancel()}}
 $('cancel').onclick=()=>back();
 $('save').onclick=()=>{saving=true;back()};
+$('del').onclick=()=>{$('ta').value='';saving=true;back()};
 function finishSave(){const t=$('ta').value.trim();store.del(DK);
   if(!editing&&!t)return;if(editing&&t===editing.text)return;
   const book=nb;
@@ -300,8 +308,8 @@ function runMorph(o){const k=morphKeys();return live=[$('book').animate(k.w,o),d
 function toBrowse(){if(busy)return;busy=true;pushLv(2);store.set('opened','1');$('tapBook').hidden=true;idx=Math.max(0,notes.length-1);render();
   if(reduce()){show('browse');busy=false;return}
   const h=$('home'),p=$('paper'),b=$('browse');h.classList.add('morph');p.style.opacity=0;
-  const as=runMorph({duration:1800,easing:EASE,fill:'forwards'});
-  const rv=setTimeout(()=>b.classList.remove('off'),1250);
+  const as=runMorph({duration:1100,easing:EASE,fill:'forwards'});
+  const rv=setTimeout(()=>b.classList.remove('off'),760);
   as[0].onfinish=()=>{clearTimeout(rv);b.classList.remove('off');p.style.transition='opacity .15s';p.style.opacity=1;
     setTimeout(()=>{h.classList.add('off');h.style.visibility='hidden';as.forEach(a=>a.cancel());p.style.transition='';live=[];busy=false},170)}}
 function goHome(){if(busy)return;busy=true;
@@ -309,12 +317,12 @@ function goHome(){if(busy)return;busy=true;
   const h=$('home'),p=$('paper');
   h.style.transition='none';h.style.visibility='';h.classList.remove('off');void h.offsetWidth;h.style.transition='';
   p.style.opacity=0;$('browse').classList.add('off');
-  const as=runMorph({duration:1500,easing:EASE,direction:'reverse'});
-  const t=setTimeout(()=>h.classList.remove('morph'),900);
+  const as=runMorph({duration:950,easing:EASE,direction:'reverse'});
+  const t=setTimeout(()=>h.classList.remove('morph'),570);
   as[0].onfinish=()=>{clearTimeout(t);h.classList.remove('morph');p.style.opacity='';live=[];busy=false}}
 act($('book'),()=>toBrowse());
 $('book').onclick=toBrowse;
-$('back').onclick=back;act($('back'),back);
+$('back').onclick=back;
 $('toHome').onclick=back;$('toShelf').onclick=back;
 
 /* ---- shelf: stack of spines ---- */
@@ -340,7 +348,7 @@ function buildPull(el){const r=el.getBoundingClientRect(),st=document.querySelec
     cv:[{offset:0,transform:'rotateX(90deg)',opacity:0},{offset:.24,transform:'rotateX(90deg)',opacity:0},{offset:.3,transform:'rotateX(86deg)',opacity:1},{offset:1,transform:'rotateX(0deg)',opacity:1}],
     sp:[{offset:0,transform:'rotateX(0deg)'},{offset:.28,transform:'rotateX(0deg)'},{offset:.8,transform:'rotateX(-90deg)'},{offset:1,transform:'rotateX(-90deg)'}]};
   return {ov,pv,cv,sp,k}}
-function runPull(P,rev){const o={duration:1300,easing:EASE,fill:'both',direction:rev?'reverse':'normal'};
+function runPull(P,rev){const o={duration:850,easing:EASE,fill:'both',direction:rev?'reverse':'normal'};
   return live=[P.pv.animate(P.k.pv,o),P.cv.animate(P.k.cv,o),P.sp.animate(P.k.sp,o)]}
 function pullOut(n,el){if(busy)return;busy=true;pushLv(1);store.set('pulled','1');$('tapShelf').hidden=true;setNb(n);tick();
   if(reduce()){show('home');busy=false;return}
@@ -364,15 +372,18 @@ $('stack').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){const el=e.target.clos
 
 /* ---- dialogs, toast, undo ---- */
 let mcb=null,undoFn=null,tT=null;
-function ask(o,cb){$('mt').textContent=o.text;const i=$('mi');i.hidden=!o.input;i.value=o.value||'';$('mok').textContent=o.ok;$('mc').textContent=o.cancel||'Cancel';mcb=cb;
+let askOpener=null;
+function ask(o,cb){askOpener=document.activeElement;$('mt').textContent=o.text;const i=$('mi');i.hidden=!o.input;i.value=o.value||'';$('mok').textContent=o.ok;$('mc').textContent=o.cancel||'Cancel';mcb=cb;
   $('modal').classList.add('show');syncInert();setTimeout(()=>(o.input?i:$('mok')).focus(),50)}
-function closeAsk(){$('modal').classList.remove('show');syncInert()}
+function closeAsk(){$('modal').classList.remove('show');syncInert();if(askOpener&&askOpener.isConnected)askOpener.focus({preventScroll:true});askOpener=null}
 $('mc').onclick=()=>{closeAsk();mcb=null};
 $('mok').onclick=()=>{const v=$('mi').value.trim(),f=mcb;closeAsk();mcb=null;f&&f(v)};
 $('mi').onkeydown=e=>{if(e.key==='Enter')$('mok').click()};
 addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('idxm').classList.contains('show'))closeIdx();else if($('modal').classList.contains('show'))$('mc').click();else if($('sheet').classList.contains('show'))back()});
-function toast(msg,undo){$('tt').textContent=msg;undoFn=undo||null;$('tu').hidden=!undo;$('toast').classList.add('show');clearTimeout(tT);
-  tT=setTimeout(()=>{$('toast').classList.remove('show');undoFn=null},undo?6500:3500)}
+let tms=0;
+function armToast(){clearTimeout(tT);tT=setTimeout(()=>{$('toast').classList.remove('show');undoFn=null},tms)}
+function toast(msg,undo){$('tt').textContent=msg;undoFn=undo||null;$('tu').hidden=!undo;$('toast').classList.add('show');tms=undo?8000:4000;armToast()}
+for(const [ev,fn] of [['pointerenter',()=>clearTimeout(tT)],['focusin',()=>clearTimeout(tT)],['pointerleave',()=>$('toast').classList.contains('show')&&armToast()],['focusout',()=>$('toast').classList.contains('show')&&armToast()]])$('toast').addEventListener(ev,fn);
 $('tu').onclick=()=>{const f=undoFn;undoFn=null;$('toast').classList.remove('show');f&&f()};
 $('newnb').onclick=()=>ask({text:'Name your notebook',input:1,ok:'Create'},v=>{const n={id:Date.now(),title:v||'Untitled',notes:[]};notebooks.push(n);persist();renderShelf(n.id)});
 $('rn').onclick=()=>ask({text:'Rename notebook',input:1,value:nb.title,ok:'Save'},v=>{if(v){nb.title=v;persist();setNb(nb);renderShelf()}});
@@ -391,11 +402,15 @@ $('exp').onclick=async()=>{const json=JSON.stringify({app:'notebook',v:2,noteboo
 $('imp').onclick=()=>$('file').click();
 $('file').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
   try{const d=JSON.parse(await f.text()),list=Array.isArray(d)?d:d.notebooks;if(!Array.isArray(list))throw 0;
-    let added=0;
+    let nbAdd=0,noteAdd=0;
     for(const b of list){if(!b||typeof b.title!=='string'||!Array.isArray(b.notes))continue;
-      if(b.id!=null&&notebooks.some(x=>x.id===b.id))continue;
-      notebooks.push({id:b.id!=null?b.id:Date.now()+added,title:b.title.slice(0,28),notes:b.notes.filter(n=>n&&typeof n.text==='string').map((n,i)=>({id:n.id!=null?n.id:Date.now()+i,date:/^\d{4}-\d\d-\d\d$/.test(n.date)?n.date:iso(new Date()),text:n.text}))});added++}
-    persist();renderShelf();toast(added?`Restored ${added} notebook${added>1?'s':''}`:'Nothing new to restore')}
+      const clean=b.notes.filter(n=>n&&typeof n.text==='string').map((n,i)=>({id:n.id!=null?n.id:Date.now()+i,date:/^\d{4}-\d\d-\d\d$/.test(n.date)?n.date:iso(new Date()),text:n.text}));
+      const have=b.id!=null?notebooks.find(x=>x.id===b.id):null;
+      if(have){const ids=new Set(have.notes.map(n=>n.id)),fresh=clean.filter(n=>!ids.has(n.id));
+        if(fresh.length){have.notes.push(...fresh);have.notes.sort((a,c)=>a.date<c.date?-1:a.date>c.date?1:0);noteAdd+=fresh.length}}
+      else{notebooks.push({id:b.id!=null?b.id:Date.now()+nbAdd,title:b.title.slice(0,28),notes:clean});nbAdd++;noteAdd+=clean.length}}
+    persist();renderShelf();
+    toast(nbAdd||noteAdd?`Restored ${nbAdd} notebook${nbAdd===1?'':'s'}, ${noteAdd} note${noteAdd===1?'':'s'}`:'Nothing new to restore')}
   catch(err){toast('That file isn’t a Notebook backup')}};
 
 $('tapBook').hidden=store.get('opened')==='1';
