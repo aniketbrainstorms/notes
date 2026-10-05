@@ -140,17 +140,25 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
 .sw button[aria-pressed=true]{box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--ink)}
 .cust{display:flex;align-items:center;justify-content:space-between;font-size:.9375rem;color:var(--dim);margin-bottom:10px}
 .box .cust input{width:56px;height:36px;border:0;padding:0;margin:0;background:none;border-radius:8px}
+.navr{left:auto;right:calc(env(safe-area-inset-right,0px) + 4px)}
+.add{width:56px;height:56px;margin:6px 0 18px;border-radius:50%;display:grid;place-items:center;color:var(--ink);background:var(--surface);box-shadow:inset 0 0 0 1px var(--edge),0 6px 16px #0006}
+#setm{align-items:flex-end;background:#0004}
+#setm .box{margin-bottom:calc(env(safe-area-inset-bottom,0px) + 24px)}
+.box select{background:var(--bg);color:var(--ink);border:1px solid #444;border-radius:10px;padding:10px 12px;font:16px var(--body);max-width:60%}
+.setrow{display:flex;flex-direction:column;margin:2px 0 8px;border-top:1px solid var(--edge)}
+.setrow button{text-align:left;padding:12px 0;min-height:44px;font-size:.9375rem;color:var(--ink);border-bottom:1px solid var(--edge)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <div id="app">
   <section class="view" id="shelf">
+    <button class="navb navr" id="set" aria-label="Settings"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button>
     <div class="date" id="today3"></div>
     <h1>Your notebooks</h1>
     <div class="pile"><div class="stack" id="stack"></div></div>
     <p class="tap" id="tapShelf" hidden>Tap a notebook to pull it out</p>
-    <div class="row"><button class="new pri" id="newnb">New notebook</button><button class="new" id="exp">Back up</button><button class="new" id="imp">Restore</button></div>
+    <div class="row"><button class="add" id="newnb" aria-label="New notebook"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
     <input type="file" id="file" accept=".json,application/json" hidden>
   </section>
 
@@ -171,6 +179,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,[role=button]:fo
   </section>
 
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="box"><p id="mt"></p><input id="mi" maxlength="28" placeholder="Notebook title" aria-label="Notebook title"><div class="mb"><button id="mc">Cancel</button><button id="mok">OK</button></div></div></div>
+  <div class="modal" id="setm" role="dialog" aria-modal="true" aria-label="Settings"><div class="box"><p>Settings</p><label class="cust" for="fsel"><span>Font</span><select id="fsel"></select></label><div class="setrow"><button id="exp">Back up</button><button id="imp">Restore</button></div><div class="mb"><button id="setd">Done</button></div></div></div>
   <div class="modal" id="clrm" role="dialog" aria-modal="true" aria-label="Notebook color"><div class="box"><p>Notebook color</p><div class="sw" id="sw"></div><label class="cust"><span>Custom</span><input type="color" id="cin" aria-label="Custom color"></label><div class="mb"><button id="clrd">Done</button></div></div></div>
   <div class="modal" id="idxm" role="dialog" aria-modal="true" aria-label="All notes"><div class="box"><input id="q" placeholder="Search notes" aria-label="Search notes"><div class="list" id="list"></div><div class="mb"><button id="idxc">Close</button></div></div></div>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Edit note">
@@ -189,6 +198,10 @@ const PALETTE=['#e8553d','#f4a340','#e6c84a','#7cbf5a','#2fa99a','#3d8bf2','#6f6
 const SWATCHES=[...PALETTE,'#3a3a40'];
 const lum=h=>{const c=[1,3,5].map(i=>{const v=parseInt(h.slice(i,i+2),16)/255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
 const inkFor=h=>lum(h)>.2?'#1b1b1d':'#fff8ee';
+const FONTS=[{id:'bristol',name:'Bristol',css:"'Bristol',Georgia,serif"},{id:'times',name:'Times New Roman',css:"'TimesNR','Times New Roman',Times,serif"}];
+function applyFont(id){const f=FONTS.find(x=>x.id===id)||FONTS[0],r=document.documentElement.style;r.setProperty('--head',f.css);r.setProperty('--body',f.css);return f.id}
+{const cur=applyFont(store.get('font-v1'));$('fsel').innerHTML=FONTS.map(f=>`<option value="${f.id}">${f.name}</option>`).join('');$('fsel').value=cur}
+$('fsel').onchange=e=>{store.set('font-v1',e.target.value);applyFont(e.target.value)};
 let notebooks=null;try{notebooks=JSON.parse(store.get(SK)||'null')}catch(e){}
 if(!Array.isArray(notebooks)){let old=[];try{old=JSON.parse(store.get(KEY)||'[]')}catch(e){}notebooks=[{id:Date.now(),title:'Notes',notes:old}]}
 function persist(){if(!store.set(SK,JSON.stringify(notebooks)))toast('Couldn’t save. Storage may be full or blocked.')}
@@ -222,9 +235,10 @@ addEventListener('popstate',e=>{const to=(e.state&&e.state.lv)||0;
     else if(dirty()){pushLv(3);ask({text:'Discard your changes?',ok:'Discard',cancel:'Keep editing'},()=>{store.del(DK);base=$('ta').value;back()})}
     else{store.del(DK);closeSheet()}}
   else if(from===2){$('idxm').classList.remove('show');syncInert();goHome()}
-  else if(from===1){$('clrm').classList.remove('show');syncInert();toShelf()}});
+  else if(from===1){$('clrm').classList.remove('show');syncInert();toShelf()}
+  else if(from===4){$('setm').classList.remove('show');syncInert();$('set').focus()}});
 addEventListener('pointerdown',()=>{if(busy)live.forEach(a=>{try{a.finish()}catch(e){}})},true);
-function syncInert(){const m=$('modal').classList.contains('show')||$('idxm').classList.contains('show')||$('clrm').classList.contains('show'),s=$('sheet').classList.contains('show');
+function syncInert(){const m=$('modal').classList.contains('show')||$('idxm').classList.contains('show')||$('clrm').classList.contains('show')||$('setm').classList.contains('show'),s=$('sheet').classList.contains('show');
   for(const id of ['shelf','home','browse'])$(id).inert=m||s;$('sheet').inert=m}
 
 /* ---- paper card ---- */
@@ -405,7 +419,7 @@ function closeAsk(){$('modal').classList.remove('show');syncInert();if(askOpener
 $('mc').onclick=()=>{closeAsk();mcb=null};
 $('mok').onclick=()=>{const v=$('mi').value.trim(),f=mcb;closeAsk();mcb=null;f&&f(v)};
 $('mi').onkeydown=e=>{if(e.key==='Enter')$('mok').click()};
-addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('clrm').classList.contains('show'))closeClr();else if($('idxm').classList.contains('show'))closeIdx();else if($('modal').classList.contains('show'))$('mc').click();else if($('sheet').classList.contains('show'))back()});
+addEventListener('keydown',e=>{if(e.key!=='Escape')return;if($('setm').classList.contains('show')){back();return}if($('clrm').classList.contains('show'))closeClr();else if($('idxm').classList.contains('show'))closeIdx();else if($('modal').classList.contains('show'))$('mc').click();else if($('sheet').classList.contains('show'))back()});
 let tms=0;
 function armToast(){clearTimeout(tT);tT=setTimeout(()=>{$('toast').classList.remove('show');undoFn=null},tms)}
 function toast(msg,undo){$('tt').textContent=msg;undoFn=undo||null;$('tu').hidden=!undo;$('toast').classList.add('show');tms=undo?5000:3000;armToast()}
@@ -443,13 +457,15 @@ $('cin').oninput=e=>{nb.color=e.target.value;paintCover();[...$('sw').children].
 $('cin').onchange=()=>{persist();renderShelf();paintSw()};
 
 /* ---- backup / restore ---- */
-$('exp').onclick=async()=>{const json=JSON.stringify({app:'notebook',v:2,notebooks},null,1),name='notebook-backup-'+iso(new Date())+'.json';
+$('exp').onclick=async()=>{back();const json=JSON.stringify({app:'notebook',v:2,notebooks},null,1),name='notebook-backup-'+iso(new Date())+'.json';
   try{const f=new File([json],name,{type:'application/json'});
     if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Notebook backup'});return}}
   catch(e){if(e&&e.name==='AbortError')return}
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);toast('Backup downloaded')};
-$('imp').onclick=()=>$('file').click();
+$('imp').onclick=()=>{back();$('file').click()};
+$('set').onclick=()=>{if(busy)return;$('setm').classList.add('show');syncInert();pushLv(4);setTimeout(()=>$('setd').focus(),50)};
+$('setd').onclick=()=>back();
 $('file').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
   try{const d=JSON.parse(await f.text()),list=Array.isArray(d)?d:d.notebooks;if(!Array.isArray(list))throw 0;
     let nbAdd=0,noteAdd=0;
